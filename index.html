@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mascota</title>
 
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
   <style>
     body {
       margin: 0;
@@ -15,19 +21,16 @@
 
     .card {
       max-width: 420px;
-      margin: 0 auto;      /* ← sin margen arriba */
+      margin: 0 auto;
       background: #fff;
-      border-radius: 0 0 18px 18px; /* opcional pero queda mejor */
+      border-radius: 0 0 18px 18px;
       overflow: hidden;
     }
 
-
-    /* Imagen 4:5 */
     .image-container {
       position: relative;
       aspect-ratio: 4 / 5;
       width: 100%;
-      overflow: hidden;
     }
 
     .image-container img {
@@ -36,7 +39,6 @@
       object-fit: cover;
     }
 
-    /* Degradado tipo Tinder */
     .image-container::after {
       content: "";
       position: absolute;
@@ -44,31 +46,31 @@
       background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0) 55%);
     }
 
-    /* Badge estado */
     .status-badge {
       position: absolute;
       bottom: 58px;
       left: 16px;
-      z-index: 3;
       padding: 6px 12px;
       border-radius: 50px;
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.4px;
-      animation: pulse 1.5s infinite;
+      display: none;
+      z-index: 3;
     }
 
     .status-badge.lost {
+      display: inline-block;
       background: rgba(253, 34, 78, 0.9);
       color: #fff;
       border: 2px solid #d6002f;
+      animation: pulse 1.5s infinite;
     }
 
     .status-badge.found {
+      display: inline-block;
       background: rgba(60, 200, 120, 0.9);
       color: #fff;
       border: 2px solid #0f7a3a;
-      animation: none;
     }
 
     @keyframes pulse {
@@ -77,18 +79,18 @@
       100% { box-shadow: 0 0 0 0 rgba(214,0,47,0); }
     }
 
-    /* Nombre + edad */
     .pet-header {
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #fff;
-    }
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center; /* 👈 ESTO ES CLAVE */
+  gap: 10px;
+  color: #fff;
+}
+
 
     .pet-name {
       font-size: 26px;
@@ -100,97 +102,159 @@
       opacity: 0.9;
     }
 
-    
+.info {
+  padding: 16px;
+  font-size: 14px;
+  border-bottom: 1px solid #e5e5e5; /* 👈 separación visual */
+}
 
-    /* Info */
-    .info {
-      padding: 0 16px 20px;
+.extra-info {
+  padding: 12px 16px 16px;
+  font-size: 14px;
+}
+
+
+    .extra-info h3 {
+      margin: 14px 0 8px;
       font-size: 15px;
-      line-height: 1.4;
     }
 
-    .info strong {
-      display: block;
-      margin-top: 10px;
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .info-row i {
+      width: 18px;
+      text-align: center;
+      color: #555;
+    }
+
+    .info-row a {
+      color: #007aff;
+      text-decoration: none;
+      font-weight: 500;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="card">
+<div class="card">
 
-    <div class="image-container">
-      <img id="petImage" src="" alt="Mascota" />
-      <div id="statusBadge" class="status-badge"></div>
-      <div class="pet-header">
-        <div class="pet-name" id="petName"></div>
-        <div class="pet-age" id="petAge"></div>
-      </div>
+  <div class="image-container">
+    <img id="petImage" src="" alt="Mascota">
+    <div id="statusBadge" class="status-badge"></div>
+
+    <div class="pet-header">
+      <div class="pet-name" id="petName"></div>
+      <div class="pet-age" id="petAge"></div>
+    </div>
+  </div>
+
+  <div class="info">
+    <strong>Información</strong><br>
+    Si encontraste esta mascota, por favor comunicate con su dueño.
+  </div>
+
+  <div class="extra-info">
+
+    <h3>Datos del dueño</h3>
+
+    <div class="info-row">
+      <i class="fa-solid fa-user"></i>
+      <span id="ownerName"></span>
     </div>
 
-    
+    <div class="info-row">
+      <i class="fa-solid fa-location-dot"></i>
+      <span id="ownerLocation"></span>
+    </div>
 
-    <div class="info">
-      <strong>Información</strong>
-      Si encontraste esta mascota, por favor comunicate con su dueño.
+    <div class="info-row">
+      <i class="fa-brands fa-whatsapp"></i>
+      <a id="ownerWhatsapp" target="_blank">Contactar por WhatsApp</a>
+    </div>
+
+    <h3>Información del animal</h3>
+
+    <div class="info-row">
+      <i class="fa-solid fa-weight-scale"></i>
+      <span id="petWeight"></span>
+    </div>
+
+    <div class="info-row">
+      <i class="fa-solid fa-ruler"></i>
+      <span id="petSize"></span>
+    </div>
+
+    <div class="info-row">
+      <i class="fa-solid fa-palette"></i>
+      <span id="petColor"></span>
+    </div>
+
+    <h3>Observaciones</h3>
+
+    <div class="info-row">
+      <i class="fa-solid fa-note-sticky"></i>
+      <span id="petNotes"></span>
     </div>
 
   </div>
+</div>
 
 <script>
   const petData = {
     name: "Luna",
-    birthDate: "2024-05-15",
+    birthDate: "2023-09-21",
     image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Rostkatze.JPG",
-    status: "lost" // lost | found
+    status: "",
+    owner: {
+      name: "María López",
+      location: "Palermo, CABA",
+      whatsapp: "5491112345678"
+    },
+    petInfo: {
+      weight: "6 kg",
+      size: "Mediano",
+      color: "Atigrado"
+    },
+    notes: "Es mansa y responde a su nombre."
   };
 
   function getAgeText(birthDate) {
-    const birth = new Date(birthDate);
-    const today = new Date();
-
-    let months =
-      (today.getFullYear() - birth.getFullYear()) * 12 +
-      (today.getMonth() - birth.getMonth());
-
-    if (today.getDate() < birth.getDate()) months--;
-
-    if (months < 1) return "· recién nacido";
-    if (months < 24) {
-      return months === 1 ? "· 1 mes" : `· ${months} meses`;
-    }
-
-    const years = Math.floor(months / 12);
-    return years === 1 ? "· 1 año" : `· ${years} años`;
+    const b = new Date(birthDate);
+    const t = new Date();
+    let m = (t.getFullYear() - b.getFullYear()) * 12 + (t.getMonth() - b.getMonth());
+    if (t.getDate() < b.getDate()) m--;
+    return m < 24 ? `· ${m} meses` : `· ${Math.floor(m / 12)} años`;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const nameEl = document.getElementById("petName");
-    const ageEl = document.getElementById("petAge");
-    const imgEl = document.getElementById("petImage");
-    const badgeEl = document.getElementById("statusBadge");
+    petName.textContent = petData.name;
+    petAge.textContent = getAgeText(petData.birthDate);
+    petImage.src = petData.image;
 
-    // 🔴 SI ALGUNO NO EXISTE, CORTA ACÁ
-    if (!nameEl || !ageEl || !imgEl || !badgeEl) {
-      console.error("Falta un elemento del DOM");
-      return;
+    if (petData.status === "lost") {
+      statusBadge.textContent = "¡Perdido!";
+      statusBadge.className = "status-badge lost";
+    } else if (petData.status === "found") {
+      statusBadge.textContent = "¡Encontrado!";
+      statusBadge.className = "status-badge found";
     }
 
-    nameEl.textContent = petData.name;
-    ageEl.textContent = getAgeText(petData.birthDate);
-    imgEl.src = petData.image;
+    ownerName.textContent = petData.owner.name;
+    ownerLocation.textContent = petData.owner.location;
+    ownerWhatsapp.href = `https://wa.me/${petData.owner.whatsapp}`;
 
-    if (petData.status === "found") {
-      badgeEl.textContent = "ENCONTRADO";
-      badgeEl.className = "status-badge found";
-    } else {
-      badgeEl.textContent = "¡Perdido!";
-      badgeEl.className = "status-badge lost";
-    }
+    petWeight.textContent = petData.petInfo.weight;
+    petSize.textContent = petData.petInfo.size;
+    petColor.textContent = petData.petInfo.color;
+    petNotes.textContent = petData.notes;
   });
 </script>
 
-
 </body>
 </html>
-
