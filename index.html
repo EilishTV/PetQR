@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mascota</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f4f4;
+      color: #111;
+    }
+
+    .card {
+      max-width: 420px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    /* Imagen 4:5 */
+    .image-container {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Degradado tipo Tinder */
+    .image-container::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0) 55%);
+    }
+
+    /* Badge estado */
+    .status-badge {
+      position: absolute;
+      bottom: 58px;
+      left: 16px;
+      z-index: 3;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .status-badge.lost {
+      background: rgba(253, 34, 78, 0.9);
+      color: #fff;
+      border: 2px solid #d6002f;
+    }
+
+    .status-badge.found {
+      background: rgba(60, 200, 120, 0.9);
+      color: #fff;
+      border: 2px solid #0f7a3a;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(214,0,47,0.6); }
+      70% { box-shadow: 0 0 0 8px rgba(214,0,47,0); }
+      100% { box-shadow: 0 0 0 0 rgba(214,0,47,0); }
+    }
+
+    /* Nombre + edad */
+    .pet-header {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+
+    .pet-name {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .pet-age {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    
+
+    /* Info */
+    .info {
+      padding: 0 16px 20px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .info strong {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="image-container">
+      <img id="petImage" src="" alt="Mascota" />
+      <div id="statusBadge" class="status-badge"></div>
+      <div class="pet-header">
+        <div class="pet-name" id="petName"></div>
+        <div class="pet-age" id="petAge"></div>
+      </div>
+    </div>
+
+    
+
+    <div class="info">
+      <strong>Información</strong>
+      Si encontraste esta mascota, por favor comunicate con su dueño.
+    </div>
+
+  </div>
+
+<script>
+  const petData = {
+    name: "Luna",
+    birthDate: "2024-05-15",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Rostkatze.JPG",
+    status: "lost" // lost | found
+  };
+
+  function getAgeText(birthDate) {
+    const birth = new Date(birthDate);
+    const today = new Date();
+
+    let months =
+      (today.getFullYear() - birth.getFullYear()) * 12 +
+      (today.getMonth() - birth.getMonth());
+
+    if (today.getDate() < birth.getDate()) months--;
+
+    if (months < 1) return "· recién nacido";
+    if (months < 24) {
+      return months === 1 ? "· 1 mes" : `· ${months} meses`;
+    }
+
+    const years = Math.floor(months / 12);
+    return years === 1 ? "· 1 año" : `· ${years} años`;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const nameEl = document.getElementById("petName");
+    const ageEl = document.getElementById("petAge");
+    const imgEl = document.getElementById("petImage");
+    const badgeEl = document.getElementById("statusBadge");
+
+    // 🔴 SI ALGUNO NO EXISTE, CORTA ACÁ
+    if (!nameEl || !ageEl || !imgEl || !badgeEl) {
+      console.error("Falta un elemento del DOM");
+      return;
+    }
+
+    nameEl.textContent = petData.name;
+    ageEl.textContent = getAgeText(petData.birthDate);
+    imgEl.src = petData.image;
+
+    if (petData.status === "found") {
+      badgeEl.textContent = "ENCONTRADO";
+      badgeEl.className = "status-badge found";
+    } else {
+      badgeEl.textContent = "¡Perdido!";
+      badgeEl.className = "status-badge lost";
+    }
+  });
+</script>
+
+
+</body>
+</html>
+
