@@ -8,6 +8,8 @@ import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-
 // ELEMENTOS
 const email = document.getElementById("email");
 const password = document.getElementById("password");
+const emailReg = document.getElementById("emailReg");
+const passwordReg = document.getElementById("passwordReg");
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 
@@ -24,7 +26,7 @@ loginBtn.onclick = async () => {
 // REGISTER
 signupBtn.onclick = async () => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email.value, password.value);
+    const res = await createUserWithEmailAndPassword(auth, emailReg.value, passwordReg.value);
 
     await setDoc(doc(db, "users", res.user.uid), {
       plan: "free",
