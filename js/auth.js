@@ -1,85 +1,65 @@
 import { auth, db } from "./firebase.js";
-
-import {
+import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
-  sendEmailVerification
+  signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-import {
-  doc,
-  setDoc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-// ELEMENTOS
-const loginEmail = document.getElementById("emailInput");
-const loginPass = document.getElementById("passwordInput");
-const regEmail = document.getElementById("regEmail");
-const regPass = document.getElementById("regPassword");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const errorBox = document.getElementById("authError");
 
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 const googleBtn = document.getElementById("googleBtn");
 
-// LOGIN EMAIL
+function showError(msg){
+  errorBox.textContent = msg;
+}
+
+// LOGIN
 loginBtn.onclick = async () => {
   try {
-    const res = await signInWithEmailAndPassword(auth, loginEmail.value, loginPass.value);
-
-    if (!res.user.emailVerified) {
-      alert("Verificá tu email antes de ingresar.");
-      return;
-    }
-
-    location.href = "/page/my-pets/";
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    location.href = "https://eilishtv.github.io/PetQR/page/pet/";
   } catch (e) {
-    alert(e.message);
+    showError("Email o contraseña incorrectos");
   }
 };
 
-// REGISTER EMAIL
+// REGISTER
 signupBtn.onclick = async () => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value);
-
-    await sendEmailVerification(res.user);
+    const res = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
     await setDoc(doc(db, "users", res.user.uid), {
       plan: "free",
       pets: 0,
-      created: Date.now(),
-      email: res.user.email
+      created: Date.now()
     });
 
-    alert("Te enviamos un email para verificar tu cuenta.");
+    location.href = "https://eilishtv.github.io/PetQR/page/pet/";
   } catch (e) {
-    alert(e.message);
+    showError(e.message);
   }
 };
 
-// LOGIN GOOGLE
+// GOOGLE
 googleBtn.onclick = async () => {
   try {
     const provider = new GoogleAuthProvider();
     const res = await signInWithPopup(auth, provider);
 
-    const ref = doc(db, "users", res.user.uid);
-    const snap = await getDoc(ref);
+    await setDoc(doc(db, "users", res.user.uid), {
+      plan: "free",
+      pets: 0,
+      created: Date.now()
+    }, { merge:true });
 
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        plan: "free",
-        pets: 0,
-        created: Date.now(),
-        email: res.user.email
-      });
-    }
-
-    location.href = "../page/my-pets/";
+    location.href = "https://eilishtv.github.io/PetQR/page/pet/";
   } catch (e) {
-    alert(e.message);
+    showError("No se pudo iniciar sesión con Google");
   }
 };
