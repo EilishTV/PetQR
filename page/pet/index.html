@@ -21,11 +21,12 @@
 
 <body>
   <div id="nav-placeholder"></div>
-  <script>
-    fetch('/page/nav.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('nav-placeholder').innerHTML = html);
-  </script>
+<script>
+  fetch('../nav.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('nav-placeholder').innerHTML = html);
+</script>
+
 
   <script src="/js/main.js"></script>
 </body>
