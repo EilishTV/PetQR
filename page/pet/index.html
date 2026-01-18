@@ -19,6 +19,18 @@
     </div>
   </div>
 
+<body>
+  <div id="nav-placeholder"></div>
+  <script>
+    fetch('/page/nav.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('nav-placeholder').innerHTML = html);
+  </script>
+
+  <script src="/js/main.js"></script>
+</body>
+
+
   <div class="info">
     <strong>Information</strong><br>
     If you find this pet, please contact its owner.
@@ -45,14 +57,29 @@
   <button class="cancel"><i class="fa-solid fa-xmark"></i></button>
 </div>
 
-<!-- Bottom nav -->
-<nav class="bottom-nav">
-  <a href="#" class="active"><i class="fa-solid fa-house"></i>Home</a>
-  <a href="#"><i class="fa-solid fa-paw"></i>Pet</a>
-  <a href="#"><i class="fa-solid fa-plus"></i>Add</a>
-  <a href="#"><i class="fa-solid fa-user"></i>Profile</a>
-</nav>
+
+
 
 <script src="../../js/pet.js"></script>
+
+<script>
+// Nav active link
+const navLinks = document.querySelectorAll(".bottom-nav a");
+const currentPath = window.location.pathname.split("/").filter(Boolean).pop(); // última carpeta o archivo
+
+navLinks.forEach(link => {
+  // extrae la carpeta del href (sin "../" ni "/")
+  const hrefPath = link.getAttribute("href").replace(/^(\.\.\/)+/, "").replace(/\//g, "");
+  
+  if(hrefPath === currentPath || hrefPath === "") {
+    link.classList.add("active");
+  } else {
+    link.classList.remove("active");
+  }
+});
+</script>
+
+
+
 </body>
 </html>

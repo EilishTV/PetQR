@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
+
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+</head>
+<body>
+
+<div class="profile-container">
+
+  <div class="profile-header">
+    <img src="https://i.pravatar.cc/300" class="profile-avatar">
+    <h2 id="profileName">Santi Padilla</h2>
+    <p id="profileEmail">santi@email.com</p>
+  </div>
+
+  <div class="profile-menu">
+    <div class="profile-item"><i class="fa-solid fa-paw"></i> My pets</div>
+    <div class="profile-item"><i class="fa-solid fa-gear"></i> Settings</div>
+    <div class="profile-item"><i class="fa-solid fa-circle-question"></i> Help</div>
+    <div class="profile-item logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <a href="../pet/"><i class="fa-solid fa-paw"></i>Pet</a>
+  <a href="../add/"><i class="fa-solid fa-plus"></i>Add</a>
+  <a href="../profile/" class="active"><i class="fa-solid fa-user"></i>Profile</a>
+</nav>
+
+<script src="../../js/nav.js"></script>
+<script src="../../js/profile.js"></script>
+</body>
+</html>

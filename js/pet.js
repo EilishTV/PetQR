@@ -1,3 +1,6 @@
+// =====================
+// PET DATA / RENDER
+// =====================
 const isLoggedIn = true;
 
 let petData = {
@@ -30,6 +33,8 @@ function render(){
   document.querySelectorAll("[data-field]").forEach(el=>{
     el.textContent = get(el.dataset.field);
   });
+  const petImage = document.getElementById("petImage");
+  const petAge = document.getElementById("petAge");
   petImage.src = petData.image;
   petAge.textContent = getAgeText(petData.birthDate);
 
@@ -39,6 +44,9 @@ function render(){
   else{badge.textContent=""; badge.className="status-badge";}
 }
 
+// =====================
+// EDIT MODE
+// =====================
 function enterEdit(){
   backup = JSON.parse(JSON.stringify(petData));
 
@@ -81,6 +89,8 @@ function enterEdit(){
   select.style.cssText="margin-bottom:8px;padding:4px;width:100%;box-sizing:border-box;";
   document.querySelector(".image-container").prepend(select);
 
+  const editBtn = document.getElementById("editBtn");
+  const editActions = document.getElementById("editActions");
   editActions.style.display="flex";
   editBtn.style.display="none";
 }
@@ -107,10 +117,14 @@ function exitEdit(save){
   });
 
   render();
+  const editBtn = document.getElementById("editBtn");
+  const editActions = document.getElementById("editActions");
   editActions.style.display="none";
   editBtn.style.display="flex";
 }
 
+const editBtn = document.getElementById("editBtn");
+const editActions = document.getElementById("editActions");
 editBtn.onclick=enterEdit;
 editActions.children[0].onclick=()=>exitEdit(true);
 editActions.children[1].onclick=()=>exitEdit(false);
@@ -119,19 +133,37 @@ if(isLoggedIn) editBtn.style.display="flex";
 
 render();
 
+// =====================
+// BOTTOM NAV - scroll hide/show
+// =====================
 let lastScroll = 0;
 const nav = document.querySelector('.bottom-nav');
 
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
+if(nav){
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
 
-  if(currentScroll > lastScroll && currentScroll > 100) {
-    // scroll down → ocultar
-    nav.classList.add('hidden');
-  } else {
-    // scroll up → mostrar
-    nav.classList.remove('hidden');
-  }
+    if(currentScroll > lastScroll && currentScroll > 50){ // bajó → ocultar
+      nav.classList.add('hidden');
+    } else {
+      nav.classList.remove('hidden'); // subió → mostrar
+    }
 
-  lastScroll = currentScroll;
-});
+    lastScroll = currentScroll;
+  });
+}
+
+// =====================
+// BOTTOM NAV - active link
+// =====================
+if(nav){
+  const navLinks = nav.querySelectorAll("a");
+  const pathParts = window.location.pathname.split("/").filter(Boolean);
+  const currentFolder = pathParts[pathParts.length - 2] || "";
+
+  navLinks.forEach(link => {
+    const hrefFolder = link.getAttribute("href").replace(/^(\.\.\/)+/, "").replace(/\/$/, "");
+    if(hrefFolder === currentFolder) link.classList.add("active");
+    else link.classList.remove("active");
+  });
+}
