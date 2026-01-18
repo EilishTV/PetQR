@@ -1,40 +1,84 @@
 import { auth, db } from "./firebase.js";
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword 
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ELEMENTOS
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const emailReg = document.getElementById("emailReg");
-const passwordReg = document.getElementById("passwordReg");
+const loginEmail = document.getElementById("emailInput");
+const loginPass = document.getElementById("passwordInput");
+const regEmail = document.getElementById("regEmail");
+const regPass = document.getElementById("regPassword");
+
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
+const googleBtn = document.getElementById("googleBtn");
 
-// LOGIN
+// LOGIN EMAIL
 loginBtn.onclick = async () => {
   try {
-    await signInWithEmailAndPassword(auth, email.value, password.value);
+    const res = await signInWithEmailAndPassword(auth, loginEmail.value, loginPass.value);
+
+    if (!res.user.emailVerified) {
+      alert("Verificá tu email antes de ingresar.");
+      return;
+    }
+
     location.href = "/page/my-pets/";
   } catch (e) {
     alert(e.message);
   }
 };
 
-// REGISTER
+// REGISTER EMAIL
 signupBtn.onclick = async () => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, emailReg.value, passwordReg.value);
+    const res = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value);
+
+    await sendEmailVerification(res.user);
 
     await setDoc(doc(db, "users", res.user.uid), {
       plan: "free",
       pets: 0,
-      created: Date.now()
+      created: Date.now(),
+      email: res.user.email
     });
 
-    location.href = "/page/my-pets/";
+    alert("Te enviamos un email para verificar tu cuenta.");
+  } catch (e) {
+    alert(e.message);
+  }
+};
+
+// LOGIN GOOGLE
+googleBtn.onclick = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, provider);
+
+    const ref = doc(db, "users", res.user.uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        plan: "free",
+        pets: 0,
+        created: Date.now(),
+        email: res.user.email
+      });
+    }
+
+    location.href = "../page/my-pets/";
   } catch (e) {
     alert(e.message);
   }

@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login · PetQR</title>
+<meta charset="UTF-8">
+<title>PetQR · Login</title>
 </head>
 <body>
 
-<h2>Login</h2>
-<input id="email" type="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button id="loginBtn" type="button">Login</button>
+<div id="loginView">
+  <h1>PetQR</h1>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button id="loginBtn">Login</button>
+  <button id="googleBtn">Continue with Google</button>
 
-<h2>Create account</h2>
-<input id="emailReg" type="email" placeholder="Email">
-<input id="passwordReg" type="password" placeholder="Password">
-<button id="signupBtn" type="button">Create account</button>
+  <p>Don’t have an account? <a href="#" id="goRegister">Create one</a></p>
+</div>
+
+<div id="registerView" style="display:none">
+  <h1>Create account</h1>
+  <input id="emailReg" placeholder="Email">
+  <input id="passwordReg" type="password" placeholder="Password">
+  <button id="signupBtn">Create account</button>
+  <p>Already have an account? <a href="#" id="goLogin">Login</a></p>
+</div>
 
 <script type="module" src="/js/auth.js"></script>
 </body>
