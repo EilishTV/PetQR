@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+</head>
+<body>
+
+<div class="card">
+  <div class="image-container">
+    <img id="petImage">
+    <div id="statusBadge" class="status-badge"></div>
+    <div class="pet-header">
+      <div class="pet-name" data-field="name"></div>
+      <div class="pet-age" id="petAge"></div>
+    </div>
+  </div>
+
+  <div class="info">
+    <strong>Information</strong><br>
+    If you find this pet, please contact its owner.
+  </div>
+
+  <div class="extra-info">
+    <h3>Owner Info</h3>
+    <div class="info-row"><i class="fa-user fa-solid"></i><span data-field="owner.name"></span></div>
+    <div class="info-row"><i class="fa-location-dot fa-solid"></i><span data-field="owner.location"></span></div>
+
+    <h3>Pet Info</h3>
+    <div class="info-row"><i class="fa-weight-scale fa-solid"></i><span data-field="petInfo.weight"></span></div>
+    <div class="info-row"><i class="fa-ruler fa-solid"></i><span data-field="petInfo.size"></span></div>
+    <div class="info-row"><i class="fa-palette fa-solid"></i><span data-field="petInfo.color"></span></div>
+
+    <h3>Notes</h3>
+    <div class="info-row"><i class="fa-note-sticky fa-solid"></i><span data-field="notes"></span></div>
+  </div>
+</div>
+
+<div id="editBtn" class="edit-btn"><i class="fa-solid fa-pencil"></i></div>
+<div id="editActions" class="edit-actions">
+  <button class="save"><i class="fa-solid fa-check"></i></button>
+  <button class="cancel"><i class="fa-solid fa-xmark"></i></button>
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <a href="#" class="active"><i class="fa-solid fa-house"></i>Home</a>
+  <a href="#"><i class="fa-solid fa-paw"></i>Pet</a>
+  <a href="#"><i class="fa-solid fa-plus"></i>Add</a>
+  <a href="#"><i class="fa-solid fa-user"></i>Profile</a>
+</nav>
+
+<script src="../../js/pet.js"></script>
+</body>
+</html>
